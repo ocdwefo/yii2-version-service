@@ -1,0 +1,70 @@
+{
+    "name": "ocdwefo/yii2-version-service",
+    "description": "Entity versioning for Yii2 in DDD style: snapshots described by schemas, history, checkout and pruning",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "keywords": ["yii2", "versioning", "history", "snapshot", "ddd"],
+    "homepage": "https://github.com/ocdwefo/yii2-version-service",
+    "support": {
+        "issues": "https://github.com/ocdwefo/yii2-version-service/issues",
+        "source": "https://github.com/ocdwefo/yii2-version-service"
+    },
+    "require": {
+        "php": "^8.5",
+        "ext-mbstring": "*",
+        "psr/clock": "^1.0",
+        "yiisoft/yii2": "~2.0.55"
+    },
+    "require-dev": {
+        "deptrac/deptrac": "^2.0",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ocdwefo\\VersionService\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ocdwefo\\VersionService\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:unit": "phpunit --testsuite unit",
+        "test:integration": "phpunit --testsuite integration",
+        "stan": "phpstan analyse",
+        "deptrac": "php -d error_reporting=8191 vendor/bin/deptrac analyse --no-progress",
+        "check": [
+            "@composer validate --strict",
+            "@deptrac",
+            "@stan",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Run every test suite",
+        "test:unit": "Run unit tests",
+        "test:integration": "Run integration tests against the database from VERSION_SERVICE_TEST_DSN, skipped without it",
+        "stan": "Static analysis, level max",
+        "deptrac": "Check the DDD layer boundaries",
+        "check": "Everything above, the way it must pass before a release"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}

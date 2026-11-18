@@ -1,0 +1,57 @@
+# DDD layer boundaries. An arrow means "may depend on":
+#
+#   Infrastructure ──► Application ──► Domain
+#         │                                ▲
+#         └────────────────────────────────┘
+#   Testing ──► Domain, PHPUnit
+#
+# Domain knows nothing about Yii, Application knows nothing about Yii or Infrastructure.
+# Testing holds contract tests for adapters written by projects, it is the only place PHPUnit is allowed.
+# Classes outside every layer (PHP core: DateTimeImmutable, Stringable...) are not checked.
+deptrac:
+  paths:
+    - ./src
+  layers:
+    - name: Domain
+      collectors:
+        - type: classLike
+          value: ^Ocdwefo\\VersionService\\Domain\\.*
+    - name: Application
+      collectors:
+        - type: classLike
+          value: ^Ocdwefo\\VersionService\\Application\\.*
+    - name: Infrastructure
+      collectors:
+        - type: classLike
+          value: ^Ocdwefo\\VersionService\\Infrastructure\\.*
+    - name: Testing
+      collectors:
+        - type: classLike
+          value: ^Ocdwefo\\VersionService\\Testing\\.*
+    - name: PsrClock
+      collectors:
+        - type: classLike
+          value: ^Psr\\Clock\\.*
+    - name: Yii
+      collectors:
+        - type: classLike
+          value: ^(Yii|yii\\.*)$
+    - name: PHPUnit
+      collectors:
+        - type: classLike
+          value: ^PHPUnit\\.*
+  ruleset:
+    Domain:
+      - PsrClock
+    Application:
+      - Domain
+      - PsrClock
+    Infrastructure:
+      - Domain
+      - Application
+      - PsrClock
+      - Yii
+    Testing:
+      - Domain
+      - PsrClock
+      - PHPUnit
